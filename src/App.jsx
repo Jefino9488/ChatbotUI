@@ -94,7 +94,7 @@ function App() {
     }
 
     try {
-        const response = await fetch("http://https://chatbotserver9488.applikuapp.com/:8000/chat", {
+        const response = await fetch("https://server.applikuapp.com/chat", {
             method: "POST",
             body: formData,
         });
