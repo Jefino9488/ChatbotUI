@@ -306,7 +306,6 @@ function App() {
                     <button onClick={clearPdfText} className="clear_btn">
                         Clear
                     </button>
-
                 </div>
                 <div className={`floating-nav ${isNavOpen ? "active" : ""}`}>
                     <div className="title1">
@@ -391,6 +390,8 @@ function App() {
                                     id="msg"
                                     className="bg-[#222630] px-4 py-3 outline-none w-[90%] text-white rounded-lg border-2 transition-colors duration-100 border-solid focus:border-[#596A95] border-[#2B3040]"
                                     type="text"
+                                    spellCheck="true"
+                                    lang="en"
                                     placeholder={`message ${selectedModel}`}
                                     value={input}
                                     onChange={handleInputChange}

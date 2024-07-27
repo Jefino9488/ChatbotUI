@@ -412,7 +412,7 @@ img {
   color: #4d1a55;
   display: flex;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 15px;
   align-items: center;
   justify-content: center;
   transition: background-color 0.3s;
