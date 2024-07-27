@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import Loader from "./Loader.jsx";
 import pdfToText from "react-pdftotext";
 import { IoMdMicOff } from "react-icons/io";
 import ReactMarkdown from "react-markdown";
@@ -52,6 +53,14 @@ function App() {
   const msgRef = useRef(null);
   const pdfFileInputRef = useRef(null);
   const imageFileInputRef = useRef(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+      // Simulate a network request to fetch initial data
+      setTimeout(() => {
+          setLoading(false); // Set loading to false after the request is complete
+      }, 3000); // Adjust this delay as needed
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -146,7 +155,7 @@ function App() {
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      handleSendMessage();
+      handleSendMessage().then(r => r);
     }
   };
 
@@ -268,6 +277,9 @@ function App() {
 
   return (
     <div className="App">
+        {loading ? (
+            <Loader />
+        ) : (
       <div className="one_p">
         <div className="one_p chat_bot">
           <div className="title">
@@ -381,7 +393,7 @@ function App() {
             Clear
           </button>
         </div>
-      </div>
+      </div>)}
     {apiKeyFormVisible && (
       <div className="popup">
         <div className="popup-inner">
