@@ -23,14 +23,53 @@
   padding-right: 20px;
 }
 
-.pdf-to-text {
-  flex: 2; /* 40% of the screen */
+.left-nav {
+  flex: 0.5; /* 50% of the screen width */
   display: flex;
   flex-direction: column;
   padding-left: 20px;
   padding-right: 20px;
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
+}
+
+.nav-icon {
+  display: none;
+  top: 10px;
+  left: 10px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 1000; /* Ensure it's above other content */
+}
+
+.floating-nav {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px; /* Adjust as needed */
+  height: 100%;
+  background-color: #38393e;
+  z-index: 1000;
+  padding: 1rem;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+  transform: translateX(-100%); /* Hide off-screen by default */
+  transition: transform 1s ease; /* Smooth slide-in effect */
+}
+
+.floating-nav.active {
+  display: block;
+  transform: translateX(0);
+}
+
+@media (max-width: 768px) {
+  .left-nav {
+    display: none;
+  }
+
+  .nav-icon {
+    display: block;
+  }
 }
 
 .vertical-line {
@@ -44,6 +83,8 @@
 .title {
   align-self: flex-start;
   text-align: center;
+  display: flex;
+  gap: 5px;
   margin-bottom: 20px;
 }
 
@@ -193,7 +234,6 @@
 }
 
 
-
 .btn_record {
   margin-right: 0.5rem;
   margin-bottom: 0.6rem;
@@ -202,7 +242,7 @@
   color: red;
   padding: 0.2rem;
   transform: translateX(-20px);
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
   border: 0;
@@ -262,12 +302,13 @@
 .extracted-text {
   border: 1px solid #ccc;
   color: #959bc1;
-  padding: 10px;
   width: 90%;
   border-radius: 5px;
   background-color: #111318;
-  height: 75vh; /* Set a fixed height */
-  overflow-y: scroll; /* Enable vertical scrolling */
+  height: fit-content;
+  min-height: 10%;
+  max-height: 60%;
+  overflow-y: scroll;
 }
 
 .extracted-text pre {
@@ -301,19 +342,13 @@ img {
 }
 
 .model_select {
-    position: absolute;
-    top: 17%;
-    left: 5%;
-    transform: translate(-20%, -50%);
-    max-width: 200px;
-    padding: 10px;
-    background-color: rgba(255, 255, 255, 0.73);
-    display: none;
-    font-weight: bold;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    box-shadow: 0 0 10px rgba(30, 30, 30, 0.76);
-    z-index: 1;
+  margin-top: 1rem;
+  width: 200px;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border-radius: 5px;
+  background-color: #111318;
+  color: white;
 }
 
 /* Popup form styles */
