@@ -27,6 +27,8 @@
   flex: 0.5; /* 50% of the screen width */
   display: flex;
   flex-direction: column;
+  align-content: center;
+  align-items: center;
   padding-left: 20px;
   padding-right: 20px;
   margin-top: 1.5rem;
@@ -39,22 +41,21 @@
   left: 10px;
   font-size: 1.5rem;
   cursor: pointer;
-  z-index: 1000; /* Ensure it's above other content */
+  z-index: 1000;
 }
 
 .floating-nav {
-  display: none; /* Hidden by default */
+  display: none;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 250px; /* Adjust as needed */
+  width: 250px;
+  align-items: center;
   height: 100%;
-  background-color: #38393e;
+  background-color: rgb(89, 89, 108);
   z-index: 1000;
   padding: 1rem;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
-  transform: translateX(-100%); /* Hide off-screen by default */
-  transition: transform 1s ease; /* Smooth slide-in effect */
+  transform: translateX(-100%);
+  transition: transform 1s ease;
 }
 
 .floating-nav.active {
@@ -72,6 +73,18 @@
   }
   .vertical-line {
     display: none;
+  }
+
+  .choose_btn {
+    width: 100%;
+  }
+  .choose_btn::-webkit-file-upload-button {
+    background-color: black;
+    color: white;
+    padding: 8px;
+    border: 0;
+    margin: 1rem;
+    border-radius: 5px;
   }
 }
 
@@ -300,7 +313,7 @@
 .extracted-text {
   border: 1px solid #ccc;
   color: #959bc1;
-  width: 90%;
+  width: 100%;
   border-radius: 5px;
   background-color: #111318;
   height: fit-content;
@@ -320,7 +333,6 @@
   padding: 10px;
   border: 0;
   margin-top: 1rem;
-  margin-right: 2rem;
   border-radius: 5px;
 }
 
