@@ -249,7 +249,6 @@ function App() {
         });
     };
 
-
     const speakText = (text) => {
       if (!window.speechSynthesis) {
           console.warn("Speech synthesis is not supported in this browser");
@@ -271,7 +270,6 @@ function App() {
       window.speechSynthesis.speak(utterance);
   };
 
-
   const handleSubmitApiKeys = (e) => {
     e.preventDefault();
     setApiKeyFormVisible(false);
@@ -283,7 +281,6 @@ function App() {
             <Loader />
         ) : (
             <div className="one_p">
-
                 <div className="left-nav">
                     <div className="title">
                         <h2></h2>
@@ -392,7 +389,7 @@ function App() {
                             <div className="prompt">
                                 <input
                                     id="msg"
-                                    className="bg-[#222630] px-4 py-3 outline-none w-[80%] text-white rounded-lg border-2 transition-colors duration-100 border-solid focus:border-[#596A95] border-[#2B3040]"
+                                    className="bg-[#222630] px-4 py-3 outline-none w-[90%] text-white rounded-lg border-2 transition-colors duration-100 border-solid focus:border-[#596A95] border-[#2B3040]"
                                     type="text"
                                     placeholder={`message ${selectedModel}`}
                                     value={input}
@@ -400,13 +397,6 @@ function App() {
                                     onKeyDown={handleKeyDown}
                                 />
                             </div>
-                            <button
-                                onClick={recording ? stopRecording : startRecording}
-                                className="btn_record"
-                            >
-                                {recording ? <IoMdMicOff/> : <BsFillRecord2Fill/>}
-                            </button>
-                            <br/>
                             <button onClick={handleSendMessage} className="btn_send" id="send">
                                 <div className="svg-wrapper-1">
                                     <div className="svg-wrapper">

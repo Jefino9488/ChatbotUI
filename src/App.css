@@ -149,9 +149,7 @@
 }
 
 .prompt {
-  width: 200%;
-  align-self: center;
-  border-radius: 11px;
+  width: 80%;
 }
 
 #msg {
@@ -160,10 +158,14 @@
 }
 
 .parent_prompt {
+  padding-left: 5%;
+  padding-right: 5%;
   padding-top: 1rem;
   width: 100%;
   display: flex;
+  gap: 2%;
   align-items: center;
+  align-content: space-around;
 }
 
 .msg:focus {
@@ -172,11 +174,9 @@
 
 .btn_send {
   margin-bottom: 0.6rem;
-  transform: translateX(-40px);
   font-size: 1.8rem;
   justify-content: center;
   align-items: center;
-  margin-left: 2rem;
   border: none;
 }
 #send {
@@ -185,7 +185,6 @@
   background: #6e94d6;
   color: #002f64;
   padding: 0.3em 1em;
-  width: 200px;
   display: flex;
   align-items: center;
   border: none;
@@ -197,7 +196,6 @@
 
 #send span {
   display: block;
-  margin-left: 0.3em;
   transition: all 0.3s ease-in-out;
 }
 
@@ -233,7 +231,6 @@
   }
 }
 
-
 .btn_record {
   margin-right: 0.5rem;
   margin-bottom: 0.6rem;
@@ -265,21 +262,19 @@
   margin: 1rem;
   border-radius: 5px;
 }
-/* Styling for the attachment button */
+
 .btn_attach {
   margin-bottom: 0.7rem;
-  margin-left: 2rem;
-  background-color: #b9c7e5; /* Green background */
-  border: none; /* Remove borders */
-  color: #000000; /* White text */
-  padding: 5px; /* Padding */
-  display: flex; /* Center items */
-  font-size: 1.5rem; /* Icon size */
-  cursor: pointer; /* Pointer/hand icon on hover */
-  border-radius: 50%; /* Rounded shape */
-  align-items: center; /* Center items vertically */
-  justify-content: center; /* Center items horizontally */
-  transition: background-color 0.3s; /* Smooth transition */
+  background-color: #b9c7e5;
+  border: none;
+  color: #000000;
+  padding: 5px;
+  display: flex;
+  font-size: 1.5rem;
+  cursor: pointer;
+  border-radius: 50%;
+  align-items: center;
+  transition: background-color 0.3s;
 }
 
 .btn_attach:hover {
@@ -395,13 +390,11 @@ img {
 
 .cred {
   margin-bottom: 0.7rem;
-  margin-left: 1.5rem;
+  height: 50px;
+  padding: 10px;
   background-color: #f2b0f5;
   border: none;
-  height: 50px;
-  width: 280px;
   color: #4d1a55;
-  padding: 5px;
   display: flex;
   cursor: pointer;
   border-radius: 5px;
