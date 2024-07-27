@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import pdfToText from "react-pdftotext";
-import { IoMdMicOff, IoMdSend } from "react-icons/io";
+import { IoMdMicOff } from "react-icons/io";
 import ReactMarkdown from "react-markdown";
 import { BsFillRecord2Fill } from "react-icons/bs";
 import MonsterApiClient from "monsterapi";
@@ -32,6 +32,8 @@ const AVAILABLE_MODELS = [
   'models/gemini-1.5-flash-latest', 'models/gemini-1.5-pro', 'models/gemini-1.5-pro-001',
   'models/gemini-1.5-pro-latest', 'models/gemini-pro', 'models/gemini-pro-vision'
 ];
+
+let currentUtterance = null;
 
 function App() {
   const [messages, setMessages] = useState([]);
@@ -73,6 +75,9 @@ function App() {
 
   const handleSendMessage = async () => {
     if (input.trim() === "" && !file) return;
+    if (currentUtterance) {
+        window.speechSynthesis.cancel();
+    }
 
     const userMessage = { from: "user", text: input, image: file ? URL.createObjectURL(file) : null };
     setMessages([...messages, userMessage]);
@@ -104,7 +109,6 @@ function App() {
         }
         const botMessage = { from: "bot", text: data.response, image: data.image_url };
         setMessages((prevMessages) => [...prevMessages, botMessage]);
-        speakText(data.response);
     } catch (error) {
         console.error(error);
         alert("An error occurred. Please try again.");
@@ -226,15 +230,36 @@ function App() {
     pdfFileInputRef.current.value = "";
   };
 
-  const speakText = (text) => {
-    if ('speechSynthesis' in window) {
+    const copyToClipboard = (text) => {
+        navigator.clipboard.writeText(text).then(() => {
+            alert("Text copied to clipboard!");
+        }).catch((error) => {
+            console.error("Failed to copy text: ", error);
+        });
+    };
+
+
+    const speakText = (text) => {
+      if (!window.speechSynthesis) {
+          console.warn("Speech synthesis is not supported in this browser");
+          return;
+      }
+
+      if (currentUtterance) {
+          window.speechSynthesis.cancel();
+      }
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'en-US';
+      utterance.onend = () => {
+          console.log("Speech ended");
+      };
+      utterance.onerror = (event) => {
+          console.error("Speech error:", event.error);
+      };
+
+      currentUtterance = utterance;
       window.speechSynthesis.speak(utterance);
-    } else {
-      console.error("Web Speech API is not supported in this browser.");
-    }
   };
+
 
   const handleSubmitApiKeys = (e) => {
     e.preventDefault();
@@ -246,9 +271,9 @@ function App() {
       <div className="one_p">
         <div className="one_p chat_bot">
           <div className="title">
-            <h2>AI Chat Bot</h2>
+              <h2 id="head"><span className="highlight"> AI </span>Chat Bot</h2>
           </div>
-          <div className="parent_chat">
+            <div className="parent_chat">
             <select value={selectedModel} onChange={handleModelChange} className="model_select">
               {AVAILABLE_MODELS.map((model) => (
                   <option key={model} value={model}>
@@ -262,60 +287,95 @@ function App() {
                     <p className="txt">
                       <ReactMarkdown>{msg.text}</ReactMarkdown>
                       {msg.from === 'user' && msg.image && <img src={msg.image} alt="attached" style={{ maxWidth: "100%" }} />}
+                        {msg.from === "bot" && (
+                            <div className="bot-actions">
+                                <button onClick={() => speakText(msg.text)}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                         width="18px" fill="#e8eaed">
+                                        <path
+                                            d="M560-131v-82q90-26 145-100t55-168q0-94-55-168T560-749v-82q124 28 202 125.5T840-481q0 127-78 224.5T560-131ZM120-360v-240h160l200-200v640L280-360H120Zm440 40v-322q47 22 73.5 66t26.5 96q0 51-26.5 94.5T560-320ZM400-606l-86 86H200v80h114l86 86v-252ZM300-480Z"/>
+                                    </svg>
+                                </button>
+                                <button onClick={() => copyToClipboard(msg.text)}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
+                                         width="18px" fill="#e8eaed">
+                                        <path
+                                            d="M360-240q-29.7 0-50.85-21.15Q288-282.3 288-312v-480q0-29.7 21.15-50.85Q330.3-864 360-864h384q29.7 0 50.85 21.15Q816-821.7 816-792v480q0 29.7-21.15 50.85Q773.7-240 744-240H360Zm0-72h384v-480H360v480ZM216-96q-29.7 0-50.85-21.15Q144-138.3 144-168v-552h72v552h456v72H216Zm144-216v-480 480Z"/>
+                                    </svg>
+                                </button>
+                            </div>)}
                     </p>
                   </div>
               ))}
             </div>
-            <div className="parent_prompt">
-              <button onClick={() => setApiKeyFormVisible(true)} className="cred">APIS</button>
-              <button onClick={() => imageFileInputRef.current.click()} className="btn_attach">
-                <MdAttachFile/>
-              </button>
-              <input
-                  type="file"
-                  style={{display: "none"}}
-                  accept="image/*"
-                  ref={imageFileInputRef}
-                  onChange={(e) => setFile(e.target.files[0])}
-              />
-              <div className="prompt">
-                <input
-                    type="text"
-                    className="msg"
-                    placeholder={`message ${selectedModel}`}
-                    value={input}
-                    onChange={handleInputChange}
-                    onKeyDown={handleKeyDown}
-                />
+                <div className="parent_prompt">
+                    <button onClick={() => setApiKeyFormVisible(true)} className="cred">APIS</button>
+                    <button onClick={() => imageFileInputRef.current.click()} className="btn_attach">
+                        <MdAttachFile/>
+                  </button>
+                  <input
+                      type="file"
+                      style={{display: "none"}}
+                      accept="image/*"
+                      ref={imageFileInputRef}
+                      onChange={(e) => setFile(e.target.files[0])}
+                  />
+                  <div className="prompt">
+                      <input
+                          id="msg"
+                          className="bg-[#222630] px-4 py-3 outline-none w-[80%] text-white rounded-lg border-2 transition-colors duration-100 border-solid focus:border-[#596A95] border-[#2B3040]"
+                          type="text"
+                          placeholder={`message ${selectedModel}`}
+                          value={input}
+                          onChange={handleInputChange}
+                          onKeyDown={handleKeyDown}
+                      />
+                  </div>
+                  <button
+                      onClick={recording ? stopRecording : startRecording}
+                      className="btn_record"
+                  >
+                      {recording ? <IoMdMicOff/> : <BsFillRecord2Fill/>}
+                  </button>
+                  <br/>
+                  <button onClick={handleSendMessage} className="btn_send" id="send">
+                      <div className="svg-wrapper-1">
+                          <div className="svg-wrapper">
+                              <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 24 24"
+                                  width="24"
+                                  height="24"
+                              >
+                                  <path fill="none" d="M0 0h24v24H0z"></path>
+                                  <path
+                                      fill="currentColor"
+                                      d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"
+                                  ></path>
+                              </svg>
+                          </div>
+                      </div>
+                      <span>Send</span>
+                  </button>
+
               </div>
-              <button
-                  onClick={recording ? stopRecording : startRecording}
-                  className="btn_record"
-              >
-                {recording ? <IoMdMicOff/> : <BsFillRecord2Fill/>}
-              </button>
-              <br/>
-              <button onClick={handleSendMessage} className="btn_send">
-                <IoMdSend/>
-              </button>
-            </div>
           </div>
         </div>
-        <div className="vertical-line"></div>
-        <div className="pdf-to-text">
-          <div className="title">
-            <h2>PDF Context Loader</h2>
-          </div>
-          <input
-              type="file"
-              className="self_center choose_btn"
-              accept="application/pdf"
-              onChange={extractText}
-              ref={pdfFileInputRef}
-          />
-          <div className="extracted-text">
-            <h2 className="self_center">Extracted Text</h2>
-            <pre>{pdfText}</pre>
+          <div className="vertical-line"></div>
+          <div className="pdf-to-text">
+              <div className="title">
+                  <h2> </h2>
+              </div>
+              <input
+                  type="file"
+                  className="self_center choose_btn"
+                  accept="application/pdf"
+                  onChange={extractText}
+                  ref={pdfFileInputRef}
+              />
+              <div className="extracted-text">
+                  <h2 className="self_center">Extracted Text</h2>
+                  <pre>{pdfText}</pre>
           </div>
           <button onClick={clearPdfText} className="clear_btn">
             Clear
