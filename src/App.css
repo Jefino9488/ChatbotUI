@@ -368,7 +368,7 @@ img {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.66);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -376,9 +376,9 @@ img {
 }
 
 .popup-inner {
-  background: #e2e2e8;
+  background: #111318;
   padding: 20px;
-  color: black;
+  color: #f8f8f8;
   border-radius: 8px;
   width: 300px;
   box-shadow: 0 2px 10px rgb(0, 0, 0);
@@ -388,7 +388,7 @@ img {
 .api-key-form label {
   display: block;
   margin-bottom: 10px;
-  color: #000000;
+  color: #ffffff;
 }
 
 .api-key-form input {
@@ -406,13 +406,13 @@ img {
 .cred {
   margin-bottom: 0.7rem;
   height: 50px;
-  padding: 10px;
+  width: 50px;
   background-color: #f2b0f5;
   border: none;
   color: #4d1a55;
   display: flex;
   cursor: pointer;
-  border-radius: 15px;
+  border-radius: 25%;
   align-items: center;
   justify-content: center;
   transition: background-color 0.3s;
@@ -420,6 +420,8 @@ img {
 
 .cred:hover {
   background-color: #bc7fc0;
+  border-radius: 50%;
+  transition: boder-radius 0.3s ease-in-out;
 }
 
 .api-submit {
