@@ -394,6 +394,7 @@ img {
 .api-key-form input {
   width: calc(100% - 20px);
   padding: 5px;
+  color: black;
   margin-bottom: 10px;
   border-radius: 5px;
   border: 1px solid #4d1a55;
