@@ -110,7 +110,7 @@ function App() {
     }
 
     try {
-        const response = await fetch("https://botserver.applikuapp.com/chat", {
+        const response = await fetch("https://bold-devora-jefino-code-fa36bb8f.koyeb.app/chat", {
             method: "POST",
             body: formData,
         });
